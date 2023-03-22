@@ -1,0 +1,127 @@
+create table SUPPLIER(Sno int primary key,Sname varchar(15),Saddress varchar(15));
+desc SUPPLIER;
+insert into SUPPLIER (Sno,Sname,Saddress) values (1001,'MICHAEL','BASILDON');
+insert into SUPPLIER (Sno,Sname,Saddress) values (1002,'RINGWORLD','GERMANY');
+insert into SUPPLIER (Sno,Sname,Saddress) values (1003,'BABYLON','LONDON');
+insert into SUPPLIER (Sno,Sname,Saddress) values (1004,'JOHN','BASILDON');
+insert into SUPPLIER (Sno,Sname,Saddress) values (1005,'SMITH','GERMANY');
+insert into SUPPLIER (Sno,Sname,Saddress) values (1006,'PETER','LONDON');
+select * from SUPPLIER;
+
+
+create table SALESREP(REP_NO int primary key,Sname varchar (20));
+desc SALESREP;
+insert into SALESREP(REP_NO,Sname) values (1,'MIKE');
+insert into SALESREP(REP_NO,Sname) values (2,'FRED');
+insert into SALESREP(REP_NO,Sname) values (3,'ALI');
+insert into SALESREP(REP_NO,Sname) values (4,'SAM');
+insert into SALESREP(REP_NO,Sname) values (5,'BILLADAS');
+insert into SALESREP(REP_NO,Sname) values (6,'SAM');
+select * from SALESREP;
+
+
+create table DEPOT(DEPOT_NO int primary key,LOCATION varchar(20),ADDRESS varchar(20),REP_NO int);
+desc DEPOT;
+insert into DEPOT (DEPOT_NO,LOCATION,ADDRESS,REP_NO) values (1,'NORTH','UK',1);
+insert into DEPOT (DEPOT_NO,LOCATION,ADDRESS,REP_NO) values (2,'SOUTH','USA',2);
+insert into DEPOT (DEPOT_NO,LOCATION,ADDRESS,REP_NO) values (3,'LONDON WEST','USA',3);
+insert into DEPOT (DEPOT_NO,LOCATION,ADDRESS,REP_NO) values (4,'EAST','NZ',4);
+insert into DEPOT (DEPOT_NO,LOCATION,ADDRESS,REP_NO) values (5,'WALES','UK',5);
+insert into DEPOT (DEPOT_NO,LOCATION,ADDRESS,REP_NO) values (6,'NORTH','KENYA',6);
+insert into DEPOT (DEPOT_NO,LOCATION,ADDRESS,REP_NO) values (16,'SOUTH','UK',2);
+select * from DEPOT;
+
+create table PRODUCT(PRODUCT_NO int primary key,DESCRIPTION varchar(20),PRICE int,SUPPLIER_NO int references SUPPLIER(Sno),MARKETING_REP_NO int references SALESREP(REP_NO),SUPPLY_DEPOT_NO int references DEPOT(DEPOT_NO));
+desc PRODUCT;
+insert into PRODUCT (PRODUCT_NO,DESCRIPTION,PRICE,SUPPLIER_NO,MARKETING_REP_NO,SUPPLY_DEPOT_NO) values (121,'REDUCER',1200,1005,5,6);
+insert into PRODUCT (PRODUCT_NO,DESCRIPTION,PRICE,SUPPLIER_NO,MARKETING_REP_NO,SUPPLY_DEPOT_NO) values (122,'PLATE',1500,1004,3,1);
+insert into PRODUCT (PRODUCT_NO,DESCRIPTION,PRICE,SUPPLIER_NO,MARKETING_REP_NO,SUPPLY_DEPOT_NO) values (123,'HANDLE',700,1003,2,4);
+insert into PRODUCT (PRODUCT_NO,DESCRIPTION,PRICE,SUPPLIER_NO,MARKETING_REP_NO,SUPPLY_DEPOT_NO) values (124,'WIDGET REMOVER',900,1005,4,2);
+insert into PRODUCT (PRODUCT_NO,DESCRIPTION,PRICE,SUPPLIER_NO,MARKETING_REP_NO,SUPPLY_DEPOT_NO) values (136,'SIZE WIDGET',1000,1001,1,5);
+insert into PRODUCT (PRODUCT_NO,DESCRIPTION,PRICE,SUPPLIER_NO,MARKETING_REP_NO,SUPPLY_DEPOT_NO) values (137,'SIZE WIDGET',15000,1002,2,16);
+select * from PRODUCT;
+
+create table CUSTOMER (CUSTOMER_NO int primary key,CNAME varchar(20),ADDRESS varchar(20),DEPOT_NO int references DEPOT(DEPOT_NO),CREDIT_LIMIT int);
+desc CUSTOMER;
+insert into CUSTOMER (CUSTOMER_NO,CNAME,ADDRESS,DEPOT_NO,CREDIT_LIMIT) values (10,'GARRY SMITH','BRIXTON',6,1000);
+insert into CUSTOMER (CUSTOMER_NO,CNAME,ADDRESS,DEPOT_NO,CREDIT_LIMIT) values (20,'PATEL','GRANGE',1,4000);
+insert into CUSTOMER (CUSTOMER_NO,CNAME,ADDRESS,DEPOT_NO,CREDIT_LIMIT) values (30,'DRAKE','BRIXTON',4,7000);
+insert into CUSTOMER (CUSTOMER_NO,CNAME,ADDRESS,DEPOT_NO,CREDIT_LIMIT) values (40,'BOB SMITH','LONDON',2,10000);
+insert into CUSTOMER (CUSTOMER_NO,CNAME,ADDRESS,DEPOT_NO,CREDIT_LIMIT) values (50,'JAMES','GRANGE',3,5000);
+insert into CUSTOMER (CUSTOMER_NO,CNAME,ADDRESS,DEPOT_NO,CREDIT_LIMIT) values (60,'NORTON','SAN FRANSISCO',5,17000);
+insert into CUSTOMER (CUSTOMER_NO,CNAME,ADDRESS,DEPOT_NO,CREDIT_LIMIT) values (70,'JOHN MICHAEL','EUROPE',16,8000);
+select * from CUSTOMER;
+
+create table CORDER(CORDER_NO int primary key,CUSTOMER_NO int references CUSTOMER(CUSTOMER_NO),DATE_PLACED DATE,DATE_DELIVERED DATE);
+desc CORDER;
+insert into CORDER (CORDER_NO,CUSTOMER_NO,DATE_PLACED,DATE_DELIVERED) values (200,20,'01-01-1993','01-04-1993');
+insert into CORDER (CORDER_NO,CUSTOMER_NO,DATE_PLACED,DATE_DELIVERED) values (201,40,'01-17-1993','01-20-1993');
+insert into CORDER (CORDER_NO,CUSTOMER_NO,DATE_PLACED,DATE_DELIVERED) values (202,20,'01-01-1993','01-04-1993');
+insert into CORDER (CORDER_NO,CUSTOMER_NO,DATE_PLACED,DATE_DELIVERED) values (203,30,'02-02-1995','02-05-1995');
+insert into CORDER (CORDER_NO,CUSTOMER_NO,DATE_PLACED,DATE_DELIVERED) values (204,10,'03-13-1996','03-16-1996');
+insert into CORDER (CORDER_NO,CUSTOMER_NO,DATE_PLACED,DATE_DELIVERED) values (205,70,'01-31-1993','01-03-1993');
+insert into CORDER (CORDER_NO,CUSTOMER_NO,DATE_PLACED,DATE_DELIVERED) values (206,40,'01-01-1993','01-04-1993');
+insert into CORDER (CORDER_NO,CUSTOMER_NO,DATE_PLACED,DATE_DELIVERED) values (208,20,'08-02-1994','08-05-1994');
+select * from CORDER;
+
+
+
+create table OLINE(CORDER_NO int references CORDER(CORDER_NO),PRODUCT_NO int references PRODUCT(PRODUCT_NO),QUANTITY int);
+desc OLINE;
+insert into OLINE(CORDER_NO,PRODUCT_NO,QUANTITY) values (200,123,5);
+insert into OLINE(CORDER_NO,PRODUCT_NO,QUANTITY) values (201,121,10);
+insert into OLINE(CORDER_NO,PRODUCT_NO,QUANTITY) values (202,123,5);
+insert into OLINE(CORDER_NO,PRODUCT_NO,QUANTITY) values (203,122,20);
+insert into OLINE(CORDER_NO,PRODUCT_NO,QUANTITY) values (204,136,30);
+insert into OLINE(CORDER_NO,PRODUCT_NO,QUANTITY) values (205,124,15);
+insert into OLINE(CORDER_NO,PRODUCT_NO,QUANTITY) values (206,136,30);
+select * from OLINE;
+
+
+create table STOCK(DEPOT_NO int references DEPOT(DEPOT_NO),PRODUCT_NO int references PRODUCT(PRODUCT_NO),QUANTITY int,RACK int,BIN_NO int);
+desc STOCK;
+insert into STOCK(DEPOT_NO,PRODUCT_NO,QUANTITY,RACK,BIN_NO) values (1,123,50,1,1);
+insert into STOCK(DEPOT_NO,PRODUCT_NO,QUANTITY,RACK,BIN_NO) values (1,137,100,10,2);
+insert into STOCK(DEPOT_NO,PRODUCT_NO,QUANTITY,RACK,BIN_NO) values (1,136,40,2,3);
+insert into STOCK(DEPOT_NO,PRODUCT_NO,QUANTITY,RACK,BIN_NO) values (1,123,60,7,1);
+insert into STOCK(DEPOT_NO,PRODUCT_NO,QUANTITY,RACK,BIN_NO) values (1,121,90,5,4);
+insert into STOCK(DEPOT_NO,PRODUCT_NO,QUANTITY,RACK,BIN_NO) values (1,124,120,4,7);
+insert into STOCK(DEPOT_NO,PRODUCT_NO,QUANTITY,RACK,BIN_NO) values (1,122,80,10,8);
+select * from STOCK;
+
+
+
+
+\\practical-3\\
+
+1 = update PRODUCT set PRICE = 2000 where PRODUCT_NO = 122;
+2 = update CUSTOMER set CREDIT_LIMIT = 8000 where ADDRESS = 'GRANGE';
+select * from CUSTOMER;
+desc CUSTOMER;
+3 = alter table CUSTOMER MODIFY ADDRESS varchar(30);
+4 = create table CUST1(CUSTOMER_NO, CNAME, ADDRESS) As select CUSTOMER_NO, CNAME, ADDRESS from CUSTOMER;
+5 = Alter table CUST1 Add Email_Id varchar(20);
+6 = DESC CUST1;
+7 = select * from CUST1;
+8 = Delete from CUST1 where CUSTOMER_NO = 20;
+9 = Alter table CUST1 drop column Email_Id;
+10 = Delete from CUST1;
+	SELECT * FROM CUST1;
+11 = Drop table CUST1;
+	select * from CUST1;
+
+
+
+\\practical-4\\
+
+1 = SELECT SYSTIMESTAMP FROM DUAL;
+2 = select * from tab;
+3 = select CUSTOMER_NO, CNAME from CUSTOMER;
+4 = select * from PRODUCT where PRODUCT_NO = 121 or PRODUCT_NO = 136;
+5 = select * from DEPOT where REP_NO = 5;
+6 = select PRODUCT_NO, Description from PRODUCT where SUPPLIER_NO  = 1005;
+7 = select * from CUSTOMER where CNAME like '%SM_T%';
+8 = select * from CORDER where DATE_PLACED between '01-01-1993' and '01-31-1993';
+9 = select REP_NO, DEPOT_NO, ADDRESS from DEPOT where LOCATION = 'NORTH' and ADDRESS = 'UK';
+10 = select Description, PRICE + (PRICE*0.1) as NEWPRICE from PRODUCT;
+
