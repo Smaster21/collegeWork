@@ -1,0 +1,39 @@
+*{
+    margin: 0;
+}
+.horizontal{
+    height: 50vh;
+    display: flex;
+    align-items: center;
+}
+
+
+.p1{
+    width: 33.33%;
+    background-color: aqua;
+    height: 100%;
+}
+
+
+.p2{
+    width: 33.33%;
+    background-color:darkgreen;
+    height: 100%;
+}
+
+
+.p3{
+    width: 33.34%;
+    background-color: black;
+    height: 100%;
+}
+
+
+.vertical{
+    height: 50vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
