@@ -1,63 +1,37 @@
-# def sjf(processes):
-#     n = len(processes)
-#     burst_time = [processes[i][1] for i in range(n)]
-#     waiting_time = [0] * n
-#     turnaround_time = [0] * n
-#     total_waiting_time = 0
-#     total_turnaround_time = 0
-#     completion_time = [0] * n
-#     remaining_time = burst_time.copy()
-#     current_time = 0
-    
-#     while True:
-#         completed = True
-#         shortest_job = None
-#         shortest_job_index = None
-#         for i in range(n):
-#             if remaining_time[i] > 0 and (shortest_job is None or remaining_time[i] < shortest_job):
-#                 completed = False
-#                 shortest_job = remaining_time[i]
-#                 shortest_job_index = i
-#         if completed:
-#             break
-#         waiting_time[shortest_job_index] = current_time - processes[shortest_job_index][0]
-#         total_waiting_time += waiting_time[shortest_job_index]
-#         current_time += burst_time[shortest_job_index]
-#         turnaround_time[shortest_job_index] = current_time - processes[shortest_job_index][0]
-#         total_turnaround_time += turnaround_time[shortest_job_index]
-#         completion_time[shortest_job_index] = current_time
-#         remaining_time[shortest_job_index] = 0
-    
-#     return(waiting_time, turnaround_time, (total_waiting_time/n), (total_turnaround_time/n));
+Mutex = True
+Full = 0
+Empty = 5
+Total = 5
 
-def fcfs(processes):
-    n = len(processes)
-    waiting_time = [0] * n
-    turnaround_time = [0] * n
-    total_waiting_time = 0
-    total_turnaround_time = 0
-    current_time = 0
-    
-    for i in range(n):
-        if current_time < processes[i][0]:
-            current_time = processes[i][0]
-        waiting_time[i] = current_time - processes[i][0]
-        
-        total_waiting_time += waiting_time[i]
-        current_time += processes[i][1]
-        turnaround_time[i] = current_time - processes[i][0]
-        total_turnaround_time += turnaround_time[i]
-        
-    return(waiting_time, turnaround_time, (total_waiting_time/n), (total_turnaround_time/n));
+def Buffer(Process):
+	global Mutex
+	global Full
+	global Empty
+	if Process == 1:
+		if Mutex and (Full + Empty == Total) and Full < Total:
+			Mutex = False
+			Full = Full + 1
+			Empty = Empty - 1
+			print("Producer is Running.")
+			Mutex = True
+		elif Mutex == False:
+			print("Another Process Exists.")
+		elif Full == Total or Empty == 0:
+			print("Memory Full.")
+	elif Process == 2:
+		if Mutex and (Full + Empty == Total) and Empty < Total:
+			Mutex = False
+			Full = Full - 1
+			Empty = Empty + 1
+			print("Consumer is Running")
+			Mutex = True
+		elif Mutex == False:
+			print("Another Process Exists")
+		elif Full == 0 or Empty == Total:
+			print("Memory Empty")
 
+for i in range(6):
+	Buffer(1)
 
-List = [(1,3),(2,4),(1,2),(4,4)]
-
-for i in range(len(List)):
-    print("Arrival Time Process", (i+1), ":", List[i][0])
-    print("Burst Time Process", (i+1), ":", List[i][1])
-    print()
-
-print("Average Waiting Time:", fcfs(List)[2])
-print()
-print("Average Turn Arround Time:", fcfs(List)[3])
+for i in range(6):
+    Buffer(2)
