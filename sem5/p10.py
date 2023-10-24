@@ -1,13 +1,13 @@
-def printPattern(a, p):
-    n = len(a)
-    m = len(p)
-    for s in range(0, (n - m)):
+def printPattern(s, j):
+    n = len(s)
+    m = len(j)
+    for a in range(0, (n - m)):
         count = 0
         for i in range(m):
-            if p[i] == a[s + i]:
+            if j[i] == s[a + i]:
                 count += 1
         if count == m:
-            return s
-a = input('Text A: ')
-p = input('Text B: ')
-print("patterns occurs with shift", printPattern(a, p))
+            return a
+s = input('Text A: ')
+j = input('Text B: ')
+print("patterns occurs with shift", printPattern(s, j))

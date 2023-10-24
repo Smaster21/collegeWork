@@ -6,17 +6,17 @@ class Graph:
         self.graph = defaultdict(list)
         self.V = vertices
     
-    def addEdge(self, u, v):
-        self.graph[u].append(v)
+    def addEdge(self, s, m):
+        self.graph[s].append(m)
     
-    def topologicalSortUtil(self, v, visited, stack):
-        visited[v] = True
+    def topologicalSortUtil(self, m, visited, stack):
+        visited[m] = True
         
-        for i in self.graph[v]:
+        for i in self.graph[m]:
             if visited[i] == False:
                 self.topologicalSortUtil(i, visited, stack)
         
-        stack.insert(0, v)
+        stack.insert(0, m)
     
     def toptlogicalSort(self):
         
